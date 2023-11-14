@@ -1,19 +1,8 @@
-﻿using StudentInformationSystem.Application.JWT;
+﻿using StudentInformationSystem.Application.DTOs;
+using StudentInformationSystem.Application.JWT;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Domain.Entities;
-using StudentInformationSystem.Persistence.Interfaces.Repository.RoleRepository;
 using StudentInformationSystem.Persistence.Interfaces.Repository.UserRepository;
-using Microsoft.EntityFrameworkCore;
-using StudentInformationSystem.Persistence.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using StudentInformationSystem.Application.DTOs;
-using Microsoft.AspNetCore.Identity;
-using StudentInformationSystem.Persistence.Interfaces.Repository.TeacherRepository;
 
 namespace StudentInformationSystem.Application.Services
 {
@@ -32,6 +21,7 @@ namespace StudentInformationSystem.Application.Services
             _studentService = studentService;
             _teacherService = teacherService;
         }
+        // TODO : Yapı parçalanabilir. Solide aykırı yaklaşım
         public async Task<User> RegisterUserAsync(RegisterUserDto model)
         {
             var isUserExist = CheckUserExist(model.Email);
@@ -79,6 +69,7 @@ namespace StudentInformationSystem.Application.Services
                 return null;
         }
 
+        // TODO : Bu metod JWT Service alınacak.
         public async Task<string> GenerateJwtTokenAsync(User user)
         {
             var token = _jwtService.GenerateToken(user);
@@ -93,21 +84,24 @@ namespace StudentInformationSystem.Application.Services
             {
                 return null;
             }
+            // TODO : Include yapısı kurulacak. Bu şekilde alınmaması gerekli alt nesnelerin.
             user.UserRole = await _userRoleService.GetByRoleAsync(user.UserRoleId);
             return user;
         }
+        /// <summary>
+        /// Email daha önce kaydedilmiş mi kontrolü yapılıyor. 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public bool CheckUserExist(string email)
         {
             var user = _userRepository.GetFilterAsync(x => x.Email.Equals(email));
             bool isUserExist = user == null ? true : false;
             return isUserExist;
         }
+        // TODO: Detaylı kontrol yapılmalı.
         private bool VerifyPassword(string enteredPassword, string storedPassword)
         {
-            // Burada şifre karşılaştırması yapılmalıdır.
-            // Gerçek uygulamalarda şifreleri güvenli bir şekilde karşılaştırmak için özel bir algoritma veya kütüphane kullanılmalıdır.
-            // Örneğin, BCrypt, Argon2, PBKDF2 gibi algoritmalar kullanılabilir.
-            // Bu örnekte basit bir string karşılaştırması yapılıyor, gerçek uygulamada böyle bir kullanım önerilmez.
             return enteredPassword == storedPassword;
         }
     }

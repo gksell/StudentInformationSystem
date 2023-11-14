@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentInformationSystem.Application.Security
 {
+    // TODO : Şuan için kullanılmıyor. JWT Yapısı düzenlenecek.
     public class AdminAuthorizationHandler : AuthorizationHandler<AdminRequirement>
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, AdminRequirement requirement)

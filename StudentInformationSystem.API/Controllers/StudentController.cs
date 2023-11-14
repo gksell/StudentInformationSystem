@@ -12,7 +12,7 @@ namespace StudentInformationSystem.API.Controllers
     public class StudentController : ControllerBase
     {
         // TODO : CancelationToken Ekle
-        // TODO : Endpoint düzenlemeleri yapılacak.
+        // TODO : Endpoint düzenlemeleri yapılacak. Rest uygun olmalı.
         private readonly IStudentService _studentService;
 
         public StudentController(IStudentService studentService)
