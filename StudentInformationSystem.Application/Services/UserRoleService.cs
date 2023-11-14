@@ -1,0 +1,49 @@
+﻿using StudentInformationSystem.Application.Services.Interfaces;
+using StudentInformationSystem.Domain.Entities;
+using StudentInformationSystem.Persistence.Interfaces.Repository.RoleRepository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StudentInformationSystem.Application.Services
+{
+    public class UserRoleService : IUserRoleService
+    {
+        private readonly IRoleRepository _roleRepository;
+
+        public UserRoleService(IRoleRepository roleRepository)
+        {
+            _roleRepository = roleRepository;
+        }
+
+        public async Task<UserRole> GetOrCreateRoleAsync(string roleName)
+        {
+            var existingRole = await GetByNameAsync(roleName);
+            if (existingRole != null)
+            {
+                return existingRole;
+            }
+
+            var newRole = new UserRole
+            {
+                RoleName = roleName
+            };
+
+            await _roleRepository.AddAsync(newRole);
+
+            return newRole;
+        }
+        private async Task<UserRole> GetByNameAsync (string roleName)
+        {
+            var allRole = await _roleRepository.GetAllFilterAsync(x=>x.RoleName == roleName);
+            return allRole.FirstOrDefault();
+        }
+        public async Task<UserRole> GetByRoleAsync(int roleId)
+        {
+            var role = await _roleRepository.GetFilterAsync(x => x.Id.Equals(roleId) && !x.IsDeleted);
+            return role;
+        }
+    }
+}
