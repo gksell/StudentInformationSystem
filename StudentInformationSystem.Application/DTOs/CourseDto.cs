@@ -8,6 +8,7 @@ namespace StudentInformationSystem.Application.DTOs
 {
     public class CourseDto
     {
+        public int Id { get; set; }
         public string CourseName { get; set; }
         public int TeacherId { get; set; }
     }

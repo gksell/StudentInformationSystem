@@ -55,11 +55,16 @@ namespace StudentInformationSystem.Persistence.Repository
             }
         }
 
-        public async Task<TEntity> GetFilterAsync(Expression<Func<TEntity, bool>> filter)
+        public async Task<TEntity> GetFilterAsync(Expression<Func<TEntity, bool>> filter, params Expression<Func<TEntity, object>>[] includes)
         {
+            var query = _context.Set<TEntity>().Where(filter);
 
-                return await _context.Set<TEntity>().SingleOrDefaultAsync(filter);
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
 
+            return await query.SingleOrDefaultAsync();
         }
 
         public async Task<List<TEntity>> GetAllFilterAsync(Expression<Func<TEntity, bool>> filter = null)

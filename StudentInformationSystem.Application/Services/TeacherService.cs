@@ -3,6 +3,8 @@ using FluentValidation;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Application.ValidationRules;
+using StudentInformationSystem.Core.Enums;
+using StudentInformationSystem.Core.Results;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.TeacherRepository;
 using System;
@@ -85,5 +87,35 @@ namespace StudentInformationSystem.Application.Services
             var teacherDto = await _teacherRepository.GetByIdAsync(teacherId);
             return teacherDto != null;
         }
+
+        public async Task<IDataResult<List<CourseDto>>> GetClassesByTeacherIdAsync(int teacherId)
+        {
+            try
+            {
+                var teacher = await _teacherRepository.GetFilterAsync(x=>x.Id == teacherId,
+                                                                      x=>x.Courses);
+
+                if (teacher == null)
+                {
+                    return new DataResult<List<CourseDto>>(ResultStatus.Error, "Öğretmen bulunamadı.", null);
+                }
+
+                var courseDto = teacher.Courses.Select(c => new CourseDto
+                {
+                    Id = c.Id,
+                    CourseName = c.CourseName,
+                    TeacherId = c.TeacherId
+                }).ToList();
+
+                return new DataResult<List<CourseDto>>(ResultStatus.Success, courseDto);
+            }
+            catch (Exception ex)
+            {
+                // Loglama yapılabilir
+                return new DataResult<List<CourseDto>>(ResultStatus.Error, $"Bir hata oluştu: {ex.Message}", null);
+            }
+        }
     }
+
 }
+

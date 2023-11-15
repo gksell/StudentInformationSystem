@@ -5,6 +5,7 @@ using StudentInformationSystem.Application.Models.RequestModels;
 using StudentInformationSystem.Application.Models.ResponseModels;
 using StudentInformationSystem.Application.Services;
 using StudentInformationSystem.Application.Services.Interfaces;
+using StudentInformationSystem.Core.Enums;
 using System.Reflection.Metadata.Ecma335;
 
 namespace StudentInformationSystem.API.Controllers
@@ -110,6 +111,19 @@ namespace StudentInformationSystem.API.Controllers
         {
             await _teacherService.DeleteTeacherAsync(id);
             return NoContent();
+        }
+
+        [HttpGet("{teacherId}/courses")]
+        public async Task<IActionResult> GetCoursesByTeacherId(int teacherId)
+        {
+            var result = await _teacherService.GetClassesByTeacherIdAsync(teacherId);
+
+            return result.ResultStatus switch
+            {
+                ResultStatus.Success => Ok(result.Data),
+                ResultStatus.Error => BadRequest(result.Message),
+                _ => StatusCode(500, "Internal Server Error"),
+            };
         }
     }
 }

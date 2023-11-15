@@ -1,4 +1,5 @@
 ﻿using StudentInformationSystem.Application.DTOs;
+using StudentInformationSystem.Core.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,6 @@ namespace StudentInformationSystem.Application.Services.Interfaces
         Task UpdateTeacherAsync(int id, TeacherDto teacherDto);
         Task DeleteTeacherAsync(int id);
         Task<bool> TeacherExists(int teacherId);
+        Task<IDataResult<List<CourseDto>>> GetClassesByTeacherIdAsync(int teacherId);
     }
 }
