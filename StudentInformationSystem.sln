@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentInformationSystem.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentInformationSystem.API", "StudentInformationSystem.API\StudentInformationSystem.API.csproj", "{FAA3925F-C0F6-44DF-B55B-FEEE48106C98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentInformationSystem.Core", "StudentInformationSystem.Core\StudentInformationSystem.Core.csproj", "{C82C31CE-318C-4006-B030-42E382E99C56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{FAA3925F-C0F6-44DF-B55B-FEEE48106C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAA3925F-C0F6-44DF-B55B-FEEE48106C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAA3925F-C0F6-44DF-B55B-FEEE48106C98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C82C31CE-318C-4006-B030-42E382E99C56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C82C31CE-318C-4006-B030-42E382E99C56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C82C31CE-318C-4006-B030-42E382E99C56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C82C31CE-318C-4006-B030-42E382E99C56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
