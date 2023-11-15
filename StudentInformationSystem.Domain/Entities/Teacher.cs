@@ -14,5 +14,6 @@ namespace StudentInformationSystem.Domain.Entities
         public DateTime BirthDate { get; set; }
         public int UserId { get; set; }
         public User User { get; set; }
+        public List<Course> Courses { get; set; } = new List<Course>();
     }
 }
