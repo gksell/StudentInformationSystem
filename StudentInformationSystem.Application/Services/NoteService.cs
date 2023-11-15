@@ -36,9 +36,13 @@ namespace StudentInformationSystem.Application.Services
 
             var noteDto = _mapper.Map<NoteDto>(noteRequestModel);
 
-            // Öğrenci ve kursun varlığını kontrol et
             if (await _studentService.StudentExists(noteDto.StudentId) && await _courseService.CourseExists(noteDto.CourseId))
             {
+                if (await IsStudentAlreadyGradedAsync(noteDto.StudentId, noteDto.CourseId))
+                {
+                    return new DataResult<NoteDto>(ResultStatus.Error, "Öğrencinin aynı kursta başka not kaydı bulunmaktadır.", null);
+                }
+
                 var noteEntity = _mapper.Map<Note>(noteDto);
                 await _noteRepository.AddAsync(noteEntity);
                 return new DataResult<NoteDto>(ResultStatus.Success, noteDto);
@@ -78,6 +82,14 @@ namespace StudentInformationSystem.Application.Services
             {
                 return new DataResult<IEnumerable<StudentNoteDto>>(ResultStatus.Error, "Öğrencinin aldığı not bulunamadı.", null);
             }
+        }
+        public async Task<bool> IsStudentAlreadyGradedAsync(int studentId, int courseId)
+        {
+            var existingNote = await _noteRepository.GetFilterAsync(
+                note => note.StudentId == studentId && note.CourseId == courseId
+            );
+
+            return existingNote != null;
         }
 
     }
