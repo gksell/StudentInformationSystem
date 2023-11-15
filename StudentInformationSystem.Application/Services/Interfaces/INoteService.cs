@@ -1,0 +1,17 @@
+﻿using StudentInformationSystem.Application.DTOs;
+using StudentInformationSystem.Application.Models.RequestModels;
+using StudentInformationSystem.Core.Results;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace StudentInformationSystem.Application.Services.Interfaces
+{
+    public interface INoteService
+    {
+        Task<IDataResult<NoteDto>> AddNoteAsync(NoteRequestModel noteRequestModel);
+        Task<IDataResult<IEnumerable<StudentNoteDto>>> GetNotesByStudentIdAsync(int studentId);
+    }
+}
