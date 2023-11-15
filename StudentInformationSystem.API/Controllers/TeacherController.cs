@@ -9,7 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace StudentInformationSystem.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/teachers")]
     [ApiController]
     public class TeacherController : ControllerBase
     {
@@ -35,7 +35,7 @@ namespace StudentInformationSystem.API.Controllers
                 Id = teacher.Id,
                 FirstName = teacher.FirstName,
                 LastName = teacher.LastName,
-                // Diğer özellikler
+                BirthDate = teacher.BirthDate
             };
 
             return Ok(responseModel);
@@ -55,6 +55,7 @@ namespace StudentInformationSystem.API.Controllers
                     Id = teacher.Id,
                     FirstName = teacher.FirstName,
                     LastName = teacher.LastName,
+                    BirthDate = teacher.BirthDate
                 };
 
                 responseModels.Add(responseModel);
@@ -98,7 +99,7 @@ namespace StudentInformationSystem.API.Controllers
 
             existingTeacher.FirstName = requestModel.FirstName;
             existingTeacher.LastName = requestModel.LastName;
-            // Diğer özellikler
+            existingTeacher.BirthDate = requestModel.BirthDate;
 
             await _teacherService.UpdateTeacherAsync(id, existingTeacher);
             return Ok();
@@ -108,7 +109,7 @@ namespace StudentInformationSystem.API.Controllers
         public async Task<IActionResult> DeleteStudent(int id)
         {
             await _teacherService.DeleteTeacherAsync(id);
-            return Ok();
+            return NoContent();
         }
     }
 }

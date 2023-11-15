@@ -66,5 +66,11 @@ namespace StudentInformationSystem.Application.Services
         {
             await _studentRepository.DeleteAsync(id);
         }
+
+        public async Task<bool> StudentExists(int studentId)
+        {
+            var studentDto = await _studentRepository.GetByIdAsync(studentId);
+            return studentDto != null;
+        }
     }
 }

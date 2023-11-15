@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace StudentInformationSystem.Application.Models.RequestModels
 {
-    public class CourseRequestModel
+    public class StudentCourseRequestModel
     {
-        public string CourseName { get; set; }
-        public int TeacherId { get; set; }
+        public int StudentId { get; set; }
+        public int CourseId { get; set; }
     }
 }

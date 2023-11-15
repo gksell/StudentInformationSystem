@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace StudentInformationSystem.Application.DTOs
 {
-    public class CourseDto
+    public class StudentCourseDto
     {
-        public string CourseName { get; set; }
-        public int TeacherId { get; set; }
+        public int StudentId { get; set; }
+        public int CourseId { get; set; }
     }
 }

@@ -21,6 +21,9 @@ namespace StudentInformationSystem.Application.Mapper
             CreateMap<User, UserResponseDto>().ReverseMap();
             CreateMap<UserLoginDto, User>().ReverseMap();
             CreateMap<UserResponseDto, RegisterRequestModel>().ReverseMap();
+            CreateMap<CourseRequestModel, CourseDto>().ReverseMap();
+            CreateMap<StudentCourseRequestModel, StudentCourseDto>().ReverseMap();
+            CreateMap<StudentCourseDto, StudentCourse>().ReverseMap();
         }
     }
 }

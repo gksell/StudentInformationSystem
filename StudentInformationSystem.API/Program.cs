@@ -22,6 +22,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using StudentInformationSystem.Persistence.Interfaces.Repository.CourseRepository;
+using StudentInformationSystem.Persistence.Interfaces.Repository.StudentCourseRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,12 +40,17 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<IStudentCourseRepository, StudentCourseRepository>();
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IStudentCourseService, StudentCourseService>();
+
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddSingleton<IAuthorizationHandler, AdminAuthorizationHandler>();
 

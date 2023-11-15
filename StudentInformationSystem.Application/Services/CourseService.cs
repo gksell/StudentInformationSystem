@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using StudentInformationSystem.Application.DTOs;
+using StudentInformationSystem.Application.Models.RequestModels;
 using StudentInformationSystem.Application.Services.Interfaces;
+using StudentInformationSystem.Core.Enums;
+using StudentInformationSystem.Core.Results;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.CourseRepository;
 using StudentInformationSystem.Persistence.Interfaces.Repository.TeacherRepository;
@@ -16,18 +19,29 @@ namespace StudentInformationSystem.Application.Services
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
+        private readonly ITeacherService _teacherService;
         private readonly IMapper _mapper;
 
-        public CourseService(ICourseRepository courseRepository, IMapper mapper)
+        public CourseService(ICourseRepository courseRepository, IMapper mapper, ITeacherService teacherService)
         {
             _courseRepository = courseRepository;
             _mapper = mapper;
+            _teacherService = teacherService;
         }
 
-        public async Task AddCourseAsync(CourseDto courseDto)
+        public async Task<IDataResult<CourseDto>> AddCourseAsync(CourseRequestModel courseRequestModel)
         {
-            var courseEntity = _mapper.Map<Course>(courseDto);
-            await _courseRepository.AddAsync(courseEntity);
+            var courseDto = _mapper.Map<CourseDto>(courseRequestModel);
+
+            TeacherDto teacherExist = await _teacherService.GetTeacherByIdAsync(courseDto.TeacherId);
+            if (teacherExist != null)
+            {
+                var courseEntity = _mapper.Map<Course>(courseDto);
+                await _courseRepository.AddAsync(courseEntity);
+                return new DataResult<CourseDto>(ResultStatus.Success, courseDto);
+            }
+            else
+                return new DataResult<CourseDto>(ResultStatus.Error, "Öğretmen Bilgisi hatalı.", null);
         }
 
         public async Task DeleteCourseAsync(int id)
@@ -68,13 +82,18 @@ namespace StudentInformationSystem.Application.Services
 
             if (existingCourseEntity == null)
             {
-                // TODO : Hata işlemleri.
                 return;
             }
 
             _mapper.Map(courseDto, existingCourseEntity);
 
             await _courseRepository.UpdateAsync(existingCourseEntity);
+        }
+
+        public async Task<bool> CourseExists(int courseId)
+        {
+            var courseDto = await _courseRepository.GetByIdAsync(courseId);
+            return courseDto != null;
         }
     }
 }
