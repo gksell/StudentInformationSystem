@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StudentInformationSystem.Core\StudentInformationSystem.Core.csproj" />
     <ProjectReference Include="..\StudentInformationSystem.Persistence\StudentInformationSystem.Persistence.csproj" />
   </ItemGroup>
 

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Models.RequestModels;
 using StudentInformationSystem.Application.Services.Interfaces;
@@ -13,13 +14,13 @@ using System.Security.Claims;
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
-    private readonly IUserService _userService;
+    private readonly IAuthService _authService;
     private readonly IUserRoleService _userRoleService;
     private readonly IMapper _mapper;
 
-    public AuthController(IUserService userService, IUserRoleService userRoleService, IMapper mapper)
+    public AuthController(IAuthService authService, IUserRoleService userRoleService, IMapper mapper)
     {
-        _userService = userService;
+        _authService = authService;
         _userRoleService = userRoleService;
         _mapper = mapper;
     }
@@ -30,12 +31,12 @@ public class AuthController : ControllerBase
     {
         try
         {
-            var userRegisterDto = _mapper.Map<RegisterUserDto>(model);
-            var user = await _userService.RegisterUserAsync(userRegisterDto);
-            if (user != null)
+            // TODO : jwt token içeriden devam et. 
+            var registerUserResponseDto = await _authService.RegisterUserAsync(model);
+            if (registerUserResponseDto != null)
             {
-                var jwtToken = await _userService.GenerateJwtTokenAsync(user);
-                return Ok(new { Token = jwtToken });
+                var result = await _authService.GenerateJwtTokenAsync(registerUserResponseDto.Data);
+                return Ok(result.Data);
             }
             else
                 return BadRequest(new { Message = "Kullanıcı zaten ekli" });
@@ -54,16 +55,16 @@ public class AuthController : ControllerBase
             return BadRequest("Hatalı model bilgisi.");
         }
 
-        var user = await _userService.ValidateUserAsync(model.Email, model.Password);
+        var userValidData = await _authService.ValidateUserAsync(model.Email, model.Password);
 
-        if (user == null)
+        if (userValidData == null)
         {
             return BadRequest("Email veya Şifre hatalı.");
         }
 
-        var token = _userService.GenerateJwtTokenAsync(user);
+        var result = await _authService.GenerateJwtTokenAsync(userValidData.Data);
 
-        return Ok(new { Token = token });
+        return Ok(result.Data);
     }
 
     // TODO: İşin bitince kapat.
