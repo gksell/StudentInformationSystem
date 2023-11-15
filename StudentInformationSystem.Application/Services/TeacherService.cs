@@ -79,5 +79,11 @@ namespace StudentInformationSystem.Application.Services
 
             await _teacherRepository.UpdateAsync(existingTeacherEntity);
         }
+
+        public async Task<bool> TeacherExists(int teacherId)
+        {
+            var teacherDto = await _teacherRepository.GetByIdAsync(teacherId);
+            return teacherDto != null;
+        }
     }
 }

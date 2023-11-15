@@ -5,6 +5,7 @@ using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Models.RequestModels;
 using StudentInformationSystem.Application.Services;
 using StudentInformationSystem.Application.Services.Interfaces;
+using StudentInformationSystem.Core.Enums;
 
 namespace StudentInformationSystem.API.Controllers
 {
@@ -20,7 +21,7 @@ namespace StudentInformationSystem.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AddCourse([FromBody] CourseRequestModel courseRequestModel)
         {
             try
@@ -30,14 +31,19 @@ namespace StudentInformationSystem.API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var result = await _courseService.AddCourseAsync(courseRequestModel);
-                return Ok(result);
+                var addCourseResult = await _courseService.AddCourseAsync(courseRequestModel);
+
+                return addCourseResult.ResultStatus switch
+                {
+                    ResultStatus.Success => Ok(addCourseResult.Data),
+                    ResultStatus.Error => BadRequest(new { Message = addCourseResult.Message }),
+                    _ => StatusCode(500, "Internal Server Error")
+                };
             }
             catch (Exception ex)
             {
                 return BadRequest($"Error: {ex.Message}");
             }
-
         }
     }
 }

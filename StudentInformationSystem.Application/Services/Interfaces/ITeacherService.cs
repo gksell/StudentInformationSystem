@@ -14,5 +14,6 @@ namespace StudentInformationSystem.Application.Services.Interfaces
         Task AddTeacherAsync(TeacherDto teacherDto);
         Task UpdateTeacherAsync(int id, TeacherDto teacherDto);
         Task DeleteTeacherAsync(int id);
+        Task<bool> TeacherExists(int teacherId);
     }
 }

@@ -24,24 +24,28 @@ namespace StudentInformationSystem.Application.Services
 
         public CourseService(ICourseRepository courseRepository, IMapper mapper, ITeacherService teacherService)
         {
-            _courseRepository = courseRepository;
-            _mapper = mapper;
-            _teacherService = teacherService;
+            _courseRepository = courseRepository ?? throw new ArgumentNullException(nameof(courseRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _teacherService = teacherService ?? throw new ArgumentNullException(nameof(teacherService));
         }
 
         public async Task<IDataResult<CourseDto>> AddCourseAsync(CourseRequestModel courseRequestModel)
         {
+            if (courseRequestModel == null)
+                throw new ArgumentNullException(nameof(courseRequestModel));
+
             var courseDto = _mapper.Map<CourseDto>(courseRequestModel);
 
-            TeacherDto teacherExist = await _teacherService.GetTeacherByIdAsync(courseDto.TeacherId);
-            if (teacherExist != null)
+            if (await _teacherService.TeacherExists(courseDto.TeacherId))
             {
                 var courseEntity = _mapper.Map<Course>(courseDto);
                 await _courseRepository.AddAsync(courseEntity);
                 return new DataResult<CourseDto>(ResultStatus.Success, courseDto);
             }
             else
+            {
                 return new DataResult<CourseDto>(ResultStatus.Error, "Öğretmen Bilgisi hatalı.", null);
+            }
         }
 
         public async Task DeleteCourseAsync(int id)
