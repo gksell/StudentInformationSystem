@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Models.RequestModels;
 using StudentInformationSystem.Application.Models.ResponseModels;
-using StudentInformationSystem.Application.Services;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Core.Enums;
-using System.Reflection.Metadata.Ecma335;
 
 namespace StudentInformationSystem.API.Controllers
 {
@@ -26,43 +23,16 @@ namespace StudentInformationSystem.API.Controllers
         {
             var teacher = await _teacherService.GetTeacherByIdAsync(id);
 
-            if (teacher == null)
-            {
-                return NotFound();
-            }
-
-            var responseModel = new TeacherResponseModel
-            {
-                Id = teacher.Id,
-                FirstName = teacher.FirstName,
-                LastName = teacher.LastName,
-                BirthDate = teacher.BirthDate
-            };
-
-            return Ok(responseModel);
+            return teacher != null
+                ? Ok(teacher)
+                : NotFound("Öğretmen kaydı bulunamadı.");
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllTeachers()
         {
             var teachers = await _teacherService.GetAllTeacherAsync();
-
-            var responseModels = new List<TeacherResponseModel>();
-
-            foreach (var teacher in teachers)
-            {
-                var responseModel = new TeacherResponseModel
-                {
-                    Id = teacher.Id,
-                    FirstName = teacher.FirstName,
-                    LastName = teacher.LastName,
-                    BirthDate = teacher.BirthDate
-                };
-
-                responseModels.Add(responseModel);
-            }
-
-            return Ok(responseModels);
+            return Ok(teachers.ToList());
         }
 
         [HttpPost]

@@ -56,7 +56,7 @@ namespace StudentInformationSystem.Application.Services
         public async Task<IEnumerable<TeacherDto>> GetAllTeacherAsync()
         {
             // TODO: Mükerrer Kaydı ekleme
-            var teacherEntity = await _teacherRepository.GetAllAsync();
+            var teacherEntity = await _teacherRepository.GetAllFilterAsync(x => !x.IsDeleted);
             var teacherDto = _mapper.Map<IEnumerable<TeacherDto>>(teacherEntity);
             return teacherDto;
         }
