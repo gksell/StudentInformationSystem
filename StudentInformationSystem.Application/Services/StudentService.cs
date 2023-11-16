@@ -16,13 +16,13 @@ namespace StudentInformationSystem.Application.Services
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IMapper _mapper;
-        private readonly IValidator<Student> _studentValidator;
+        //private readonly IValidator<Student> _studentValidator;
 
-        public StudentService(IStudentRepository studentRepository, IMapper mapper, IValidator<Student> studentValidator)
+        public StudentService(IStudentRepository studentRepository, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _mapper = mapper;
-            _studentValidator = studentValidator;
+            //_studentValidator = studentValidator;
         }
 
         public async Task<StudentDto> GetStudentByIdAsync(int id)
@@ -43,8 +43,9 @@ namespace StudentInformationSystem.Application.Services
         {
             var studentEntity = _mapper.Map<Student>(studentDto);
 
-            var validationResult = _studentValidator.Validate(studentEntity);
-            await (validationResult.IsValid ? _studentRepository.AddAsync(studentEntity) : Task.FromException(new ApplicationException(validationResult.Errors.ToString())));
+            //var validationResult = _studentValidator.Validate(studentEntity);
+            //await (validationResult.IsValid ? _studentRepository.AddAsync(studentEntity) : Task.FromException(new ApplicationException(validationResult.Errors.ToString())));
+            await _studentRepository.AddAsync(studentEntity);
         }
 
         public async Task UpdateStudentAsync(int id, StudentDto studentDto)

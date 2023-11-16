@@ -19,20 +19,21 @@ namespace StudentInformationSystem.Application.Services
     {
         private readonly ITeacherRepository _teacherRepository;
         private readonly IMapper _mapper;
-        private readonly IValidator<Teacher> _teacherValidator;
+        //private readonly IValidator<Teacher> _teacherValidator;
 
-        public TeacherService(ITeacherRepository teacherRepository, IMapper mapper, IValidator<Teacher> validator)
+        public TeacherService(ITeacherRepository teacherRepository, IMapper mapper)
         {
             _teacherRepository = teacherRepository;
             _mapper = mapper;
-            _teacherValidator = validator;
+            //_teacherValidator = validator;
         }
 
         public async Task AddTeacherAsync(TeacherDto teacherDto)
         {
             var teacherEntity = _mapper.Map<Teacher>(teacherDto);
-            var validationResult = _teacherValidator.Validate(teacherEntity);
-            await (validationResult.IsValid ? _teacherRepository.AddAsync(teacherEntity) : Task.FromException(new ApplicationException(validationResult.Errors.ToString())));
+            //var validationResult = _teacherValidator.Validate(teacherEntity);
+            //await (validationResult.IsValid ? _teacherRepository.AddAsync(teacherEntity) : Task.FromException(new ApplicationException(validationResult.Errors.ToString())));
+            await _teacherRepository.AddAsync(teacherEntity);
         }
 
         public async Task DeleteTeacherAsync(int id)

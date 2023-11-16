@@ -43,7 +43,8 @@ namespace StudentInformationSystem.Application.Services
 
                 await _userRepository.AddAsync(newUser);
 
-                User addedUser = await _userRepository.GetFilterAsync(x => x.Email == newUser.Email);
+                User addedUser = await _userRepository.GetFilterAsync(x => x.Email == newUser.Email,
+                                                                      x => x.UserRole);
                 if (addedUser != null)
                     addedUser.UserRole = await _userRoleService.GetByRoleAsync(addedUser.UserRoleId);
                 if (addedUser.UserRole.RoleName.Equals("Öğrenci"))

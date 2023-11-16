@@ -56,10 +56,8 @@ builder.Services.AddSingleton<IAuthorizationHandler, AdminAuthorizationHandler>(
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllers()
-                .AddFluentValidation(fv =>                            fv.RegisterValidatorsFromAssemblyContaining<CourseRequestModelValidator>()
-                .RegisterValidatorsFromAssemblyContaining<NoteRequestModelValidator>()
-                .RegisterValidatorsFromAssemblyContaining<RegisterRequestModelValidator>()
-                .RegisterValidatorsFromAssemblyContaining<StudentCourseRequestModelValidator>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CourseRequestModelValidator>());
+                
 
 builder.Services.AddAuthentication(options =>
 {

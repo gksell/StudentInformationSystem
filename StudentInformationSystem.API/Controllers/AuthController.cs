@@ -15,14 +15,10 @@ using System.Security.Claims;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly IUserRoleService _userRoleService;
-    private readonly IMapper _mapper;
 
-    public AuthController(IAuthService authService, IUserRoleService userRoleService, IMapper mapper)
+    public AuthController(IAuthService authService)
     {
         _authService = authService;
-        _userRoleService = userRoleService;
-        _mapper = mapper;
     }
 
     [HttpPost("register")]
