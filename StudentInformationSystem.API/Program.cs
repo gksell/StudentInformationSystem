@@ -2,6 +2,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StudentInformationSystem.Application.JWT;
@@ -114,8 +115,20 @@ builder.Services.AddAuthorization( opt =>
     opt.AddPolicy("AdminPolicy", policy => policy.Requirements.Add(new AdminRequirement()));
 });
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("AllowLocalhost3000", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
+});
+
 
 var app = builder.Build();
+
+app.UseCors("AllowLocalhost3000");
 
 if (app.Environment.IsDevelopment())
 {
