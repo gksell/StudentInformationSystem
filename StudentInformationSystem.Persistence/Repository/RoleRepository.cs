@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentInformationSystem.Domain.Entities;
+using StudentInformationSystem.Persistence.Context;
 using StudentInformationSystem.Persistence.Interfaces.Repository.RoleRepository;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace StudentInformationSystem.Persistence.Repository
 {
     public class RoleRepository : Repository<UserRole>, IRoleRepository
     {
-        public RoleRepository(DbContext context) : base(context)
+        public RoleRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

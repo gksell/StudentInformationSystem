@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentInformationSystem.Persistence.Context;
 using StudentInformationSystem.Persistence.Interfaces.Repository;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ namespace StudentInformationSystem.Persistence.Repository
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private readonly DbContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly DbSet<TEntity> _dbSet;
 
         // TODO: Null Check ve HardDelete/SoftDelete ayrımı yapılacak.
-        public Repository(DbContext context)
+        public Repository(ApplicationDbContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();
@@ -64,7 +65,7 @@ namespace StudentInformationSystem.Persistence.Repository
                 query = query.Include(include);
             }
 
-            return await query.SingleOrDefaultAsync();
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<List<TEntity>> GetAllFilterAsync(Expression<Func<TEntity, bool>> filter = null)

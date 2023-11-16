@@ -15,5 +15,6 @@ namespace StudentInformationSystem.Application.Services.Interfaces
         Task<DataResult<UserResponseDto>> RegisterUserAsync(RegisterRequestModel model);
         Task<DataResult<string>> GenerateJwtTokenAsync(UserResponseDto registerUserResponseDto);
         Task<DataResult<UserResponseDto>> ValidateUserAsync(string email, string password);
+        Task<bool> CheckUserExist(string email);
     }
 }

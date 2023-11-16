@@ -35,7 +35,7 @@ namespace StudentInformationSystem.Application.JWT
                 issuer: "https://localhost:5001",
                 audience: "https://localhost:5001",
                 claims: claims,
-                expires: DateTime.Now.AddHours(15), // Token süresi, isteğe bağlı olarak ayarlayabilirsiniz
+                expires: DateTime.Now.AddHours(15),
                 signingCredentials: credentials
             );
 
@@ -50,7 +50,6 @@ namespace StudentInformationSystem.Application.JWT
 
             if (jsonToken == null)
             {
-                // Geçersiz token durumu, isteğe bağlı olarak loglama veya hata işlemleri yapılabilir.
                 return new List<string>();
             }
 

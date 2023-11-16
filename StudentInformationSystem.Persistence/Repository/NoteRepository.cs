@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentInformationSystem.Domain.Entities;
+using StudentInformationSystem.Persistence.Context;
 using StudentInformationSystem.Persistence.Interfaces.Repository.CourseRepository;
 using StudentInformationSystem.Persistence.Interfaces.Repository.NoteRepository;
 using System;
@@ -12,7 +13,7 @@ namespace StudentInformationSystem.Persistence.Repository
 {
     public class NoteRepository : Repository<Note>, INoteRepository
     {
-        public NoteRepository(DbContext context) : base(context)
+        public NoteRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

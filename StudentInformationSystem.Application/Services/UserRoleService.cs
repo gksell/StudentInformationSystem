@@ -37,8 +37,8 @@ namespace StudentInformationSystem.Application.Services
         }
         private async Task<UserRole> GetByNameAsync (string roleName)
         {
-            var allRole = await _roleRepository.GetAllFilterAsync(x=>x.RoleName == roleName);
-            return allRole.FirstOrDefault();
+            var allRole = await _roleRepository.GetFilterAsync(x=>x.RoleName == roleName);
+            return allRole;
         }
         public async Task<UserRole> GetByRoleAsync(int roleId)
         {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentInformationSystem.Domain.Entities;
+using StudentInformationSystem.Persistence.Context;
 using StudentInformationSystem.Persistence.Interfaces.Repository.UserRepository;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace StudentInformationSystem.Persistence.Repository
 {
     public class UserRepository : Repository<User>, IUserRepository
     {
-        public UserRepository(DbContext context) : base(context)
+        public UserRepository(ApplicationDbContext context) : base(context)
         {
         }
     }

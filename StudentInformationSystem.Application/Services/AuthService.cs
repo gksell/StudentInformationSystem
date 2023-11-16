@@ -32,7 +32,7 @@ namespace StudentInformationSystem.Application.Services
         public async Task<DataResult<UserResponseDto>> RegisterUserAsync(RegisterRequestModel model)
         {
             var userRegisterDto = _mapper.Map<RegisterUserDto>(model);
-            if (!CheckUserExist(model.Email))
+            if (await CheckUserExist(model.Email))
             {
                 var newUser = new User
                 {
@@ -106,9 +106,9 @@ namespace StudentInformationSystem.Application.Services
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public bool CheckUserExist(string email)
+        public async Task<bool> CheckUserExist(string email)
         {
-            var user = _userRepository.GetFilterAsync(x => x.Email.Equals(email));
+            var user = await _userRepository.GetFilterAsync(x => x.Email.Equals(email));
             bool isUserExist = user == null ? true : false;
             return isUserExist;
         }
