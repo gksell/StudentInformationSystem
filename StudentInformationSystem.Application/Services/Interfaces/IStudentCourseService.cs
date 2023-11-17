@@ -12,5 +12,6 @@ namespace StudentInformationSystem.Application.Services.Interfaces
     public interface IStudentCourseService
     {
         Task<DataResult<StudentCourseDto>> AddStudentToCourseAsync(StudentCourseRequestModel requestModel);
+        Task<List<StudentDto>> GetStudentByCourseId(int courseId);
     }
 }

@@ -17,5 +17,6 @@ namespace StudentInformationSystem.Application.Services.Interfaces
         Task DeleteTeacherAsync(int id);
         Task<bool> TeacherExists(int teacherId);
         Task<IDataResult<List<CourseDto>>> GetClassesByTeacherIdAsync(int teacherId);
+        Task<TeacherDto> GetTeacherByUserIdAsync(int userId);
     }
 }

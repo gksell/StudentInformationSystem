@@ -53,7 +53,6 @@ namespace StudentInformationSystem.Application.Services
             var existingCourseEntity = await _courseRepository.GetByIdAsync(id);
             if (existingCourseEntity == null)
             {
-                // TODO : Hata işlemleri.
                 return;
             }
             existingCourseEntity.DeletedDate = DateTime.Now;
@@ -67,8 +66,7 @@ namespace StudentInformationSystem.Application.Services
 
         public async Task<IEnumerable<CourseDto>> GetAllCoursesAsync()
         {
-            // TODO: Mükerrer Kaydı ekleme
-            var courseEntity = await _courseRepository.GetAllAsync();
+            var courseEntity = await _courseRepository.GetAllFilterAsync(x=>!x.IsDeleted);
             var courseDto = _mapper.Map<IEnumerable<CourseDto>>(courseEntity);
             return courseDto;
         }

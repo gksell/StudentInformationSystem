@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentInformationSystem.Application.Models.RequestModels;
+using StudentInformationSystem.Application.Services;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Core.Enums;
 
@@ -37,6 +38,14 @@ namespace StudentInformationSystem.API.Controllers
             {
                 return StatusCode(500, $"Internal Server Error: {ex.Message}");
             }
+        }
+
+        [HttpGet("get-student-by-course-id")]
+        public async Task<IActionResult> GetStudentsByCourseId(int courseId)
+        {
+            var students = await _studentCourseService.GetStudentByCourseId(courseId);
+
+            return Ok(students.ToList());
         }
     }
 }

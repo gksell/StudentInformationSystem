@@ -99,6 +99,7 @@ namespace StudentInformationSystem.Application.Services
             user.UserRole = await _userRoleService.GetByRoleAsync(user.UserRoleId);
 
             var userValidate = _mapper.Map<UserResponseDto>(user);
+
             return new DataResult<UserResponseDto>(ResultStatus.Success, userValidate);
         }
         /// <summary>

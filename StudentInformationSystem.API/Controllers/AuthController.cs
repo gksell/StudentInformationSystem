@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Models.RequestModels;
+using StudentInformationSystem.Application.Models.ResponseModels;
 using StudentInformationSystem.Application.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -60,7 +61,14 @@ public class AuthController : ControllerBase
 
         var result = await _authService.GenerateJwtTokenAsync(userValidData.Data);
 
-        return Ok(result.Data);
+        var responseData = new LoginResponseDto
+        {
+            Token = result.Data,
+            UserId = userValidData.Data.Id,
+            RoleName = userValidData.Data.UserRole.RoleName
+        };
+
+        return Ok(responseData);
     }
 
     // TODO: İşin bitince kapat.

@@ -68,11 +68,21 @@ namespace StudentInformationSystem.Persistence.Repository
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<List<TEntity>> GetAllFilterAsync(Expression<Func<TEntity, bool>> filter = null)
+        public async Task<List<TEntity>> GetAllFilterAsync(Expression<Func<TEntity, bool>> filter = null, params Expression<Func<TEntity, object>>[] includes)
         {
-                return filter == null ?
-                    await _context.Set<TEntity>().ToListAsync() :
-                    await _context.Set<TEntity>().Where(filter).ToListAsync();
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var include in includes)
+            {
+                query = query.Include(include);
+            }
+
+            return await query.ToListAsync();
         }
 
     }

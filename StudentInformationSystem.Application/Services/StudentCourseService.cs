@@ -48,5 +48,14 @@ namespace StudentInformationSystem.Application.Services
 
             return new DataResult<StudentCourseDto>(ResultStatus.Success,studentCourseDto);
         }
+
+        public async Task<List<StudentDto>> GetStudentByCourseId(int courseId)
+        {
+            var studentCourseEntityList = await _studentCourseRepository.GetAllFilterAsync(x => x.CourseId == courseId,
+                                                                                           x => x.Student);
+            var studentDtoList = _mapper.Map<List<StudentDto>>(studentCourseEntityList.Select(x => x.Student));
+
+            return studentDtoList;
+        }
     }
 }

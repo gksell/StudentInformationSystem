@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.Identity.Client;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.StudentRepository;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,13 +18,11 @@ namespace StudentInformationSystem.Application.Services
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IMapper _mapper;
-        //private readonly IValidator<Student> _studentValidator;
 
         public StudentService(IStudentRepository studentRepository, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _mapper = mapper;
-            //_studentValidator = studentValidator;
         }
 
         public async Task<StudentDto> GetStudentByIdAsync(int id)
@@ -42,9 +42,6 @@ namespace StudentInformationSystem.Application.Services
         public async Task AddStudentAsync(StudentDto studentDto)
         {
             var studentEntity = _mapper.Map<Student>(studentDto);
-
-            //var validationResult = _studentValidator.Validate(studentEntity);
-            //await (validationResult.IsValid ? _studentRepository.AddAsync(studentEntity) : Task.FromException(new ApplicationException(validationResult.Errors.ToString())));
             await _studentRepository.AddAsync(studentEntity);
         }
 
@@ -63,6 +60,8 @@ namespace StudentInformationSystem.Application.Services
             await _studentRepository.UpdateAsync(existingStudentEntity);
         }
 
+
+
         public async Task DeleteStudentAsync(int id)
         {
             await _studentRepository.DeleteAsync(id);
@@ -72,6 +71,13 @@ namespace StudentInformationSystem.Application.Services
         {
             var studentDto = await _studentRepository.GetByIdAsync(studentId);
             return studentDto != null;
+        }
+
+        public async Task<List<StudentDto>> GetListStudentByCoursesId(List<int> studentIdList)
+        {
+            var studentList = await _studentRepository.GetAllFilterAsync(x=>studentIdList.Equals(x.Id));
+            var studentDtoList = _mapper.Map<List<StudentDto>>(studentList);
+            return studentDtoList;
         }
     }
 }

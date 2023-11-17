@@ -15,7 +15,7 @@ namespace StudentInformationSystem.Persistence.Interfaces.Repository
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(int id);
-        Task<List<TEntity>> GetAllFilterAsync(Expression<Func<TEntity, bool>> filter = null);
+        Task<List<TEntity>> GetAllFilterAsync(Expression<Func<TEntity, bool>> filter = null, params Expression<Func<TEntity, object>>[] includes);
         Task<TEntity> GetFilterAsync(Expression<Func<TEntity, bool>> filter, params Expression<Func<TEntity, object>>[] includes);
     }
 }

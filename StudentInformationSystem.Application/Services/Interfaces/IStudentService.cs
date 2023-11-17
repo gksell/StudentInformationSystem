@@ -15,5 +15,6 @@ namespace StudentInformationSystem.Application.Services.Interfaces
         Task UpdateStudentAsync(int id, StudentDto studentDto);
         Task DeleteStudentAsync(int id);
         Task<bool> StudentExists(int studentId);
+        Task<List<StudentDto>> GetListStudentByCoursesId(List<int> coursesId);
     }
 }

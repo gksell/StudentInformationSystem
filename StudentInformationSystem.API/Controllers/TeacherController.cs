@@ -28,6 +28,16 @@ namespace StudentInformationSystem.API.Controllers
                 : NotFound("Öğretmen kaydı bulunamadı.");
         }
 
+        [HttpGet("by-user-id/{userId}")]
+        public async Task<IActionResult> GetTeacherByUserId(int userId)
+        {
+            var teacher = await _teacherService.GetTeacherByUserIdAsync(userId);
+
+            return teacher != null
+                ? Ok(teacher)
+                : NotFound($"User ID'si {userId} ile ilişkilendirilmiş öğretmen kaydı bulunamadı.");
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllTeachers()
         {
@@ -77,7 +87,7 @@ namespace StudentInformationSystem.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(int id)
+        public async Task<IActionResult> DeleteTeacher(int id)
         {
             await _teacherService.DeleteTeacherAsync(id);
             return NoContent();
