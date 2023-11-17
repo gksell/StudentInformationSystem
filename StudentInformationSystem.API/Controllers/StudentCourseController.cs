@@ -40,7 +40,7 @@ namespace StudentInformationSystem.API.Controllers
             }
         }
 
-        [HttpGet("get-student-by-course-id")]
+        [HttpGet("get-student-by-course-id/{courseId}")]
         public async Task<IActionResult> GetStudentsByCourseId(int courseId)
         {
             var students = await _studentCourseService.GetStudentByCourseId(courseId);

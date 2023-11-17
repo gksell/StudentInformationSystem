@@ -85,9 +85,10 @@ namespace StudentInformationSystem.Application.Services
         }
         public async Task<bool> IsStudentAlreadyGradedAsync(int studentId, int courseId)
         {
-            var existingNote = await _noteRepository.GetFilterAsync(
-                note => note.StudentId == studentId && note.CourseId == courseId
-            );
+            var existingNote = await _noteRepository.GetFilterAsync(note => 
+                                                                    note.StudentId == studentId && 
+                                                                    note.CourseId == courseId
+                                                                    );
 
             return existingNote != null;
         }
