@@ -50,7 +50,7 @@ namespace StudentInformationSystem.Application.Services
             }
         }
         /// <summary>
-        /// 
+        /// Öğrencilerin not - öğretmen ve kurs bilgisisni getiren metod
         /// </summary>
         /// <param name="studentId"></param>
         /// <returns></returns>
