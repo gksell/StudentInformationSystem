@@ -46,36 +46,18 @@ namespace StudentInformationSystem.Application.Services
                 User addedUser = await _userRepository.GetFilterAsync(x => x.Email == newUser.Email,
                                                                       x => x.UserRole);
                 if (addedUser != null)
-                    addedUser.UserRole = await _userRoleService.GetByRoleAsync(addedUser.UserRoleId);
-                if (addedUser.UserRole.RoleName.Equals("Öğrenci"))
                 {
-                    StudentDto studentDto = new StudentDto
-                    {
-                        UserId = addedUser.Id,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        BirthDate = model.BirthDate
-                    };
-
-                    await _studentService.AddStudentAsync(studentDto);
+                    await AddTeacherOrStudent(addedUser, model.FirstName, model.LastName, model.BirthDate);
+                    var userRegisterResponseDto = _mapper.Map<UserResponseDto>(addedUser);
+                    return new DataResult<UserResponseDto>(ResultStatus.Success, userRegisterResponseDto);
                 }
-                else if (addedUser.UserRole.RoleName.Equals("Öğretmen"))
+                else
                 {
-                    TeacherDto teacherDto = new TeacherDto
-                    {
-                        UserId = addedUser.Id,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        BirthDate = model.BirthDate
-                    };
-
-                    await _teacherService.AddTeacherAsync(teacherDto);
+                    return new DataResult<UserResponseDto>(ResultStatus.Error, "User oluşturulurken hata var", null);
                 }
-                var userRegisterResponseDto = _mapper.Map<UserResponseDto>(addedUser);
-                return new DataResult<UserResponseDto>(ResultStatus.Success, userRegisterResponseDto);
             }
             else
-                return new DataResult<UserResponseDto>(ResultStatus.Error, "Hata",null) ;
+                return new DataResult<UserResponseDto>(ResultStatus.Error, "Mail zaten eklenmiş.", null);
         }
 
         // TODO : Bu metod JWT Service alınacak.
@@ -84,7 +66,7 @@ namespace StudentInformationSystem.Application.Services
             var user = _mapper.Map<User>(userResponseDto);
             var token = _jwtService.GenerateToken(user);
 
-            return new DataResult<string>(ResultStatus.Success,token);
+            return new DataResult<string>(ResultStatus.Success, token);
         }
         public async Task<DataResult<UserResponseDto>> ValidateUserAsync(string email, string password)
         {
@@ -92,7 +74,7 @@ namespace StudentInformationSystem.Application.Services
 
             if (user == null || !VerifyPassword(password, user.Password))
             {
-                return new DataResult<UserResponseDto>(ResultStatus.Error, "Validasyon hatalı.",null);
+                return new DataResult<UserResponseDto>(ResultStatus.Error, "Validasyon hatalı.", null);
             }
             // TODO : Include yapısı kurulacak. Bu şekilde alınmaması gerekli alt nesnelerin.
 
@@ -117,6 +99,34 @@ namespace StudentInformationSystem.Application.Services
         private bool VerifyPassword(string enteredPassword, string storedPassword)
         {
             return enteredPassword == storedPassword;
+        }
+
+        public async Task AddTeacherOrStudent(User addedUser, string firstName, string lastName, DateTime birthDate)
+        {
+            if (addedUser.UserRole.RoleName.Equals("Öğrenci"))
+            {
+                StudentDto studentDto = new StudentDto
+                {
+                    UserId = addedUser.Id,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    BirthDate = birthDate
+                };
+
+                await _studentService.AddStudentAsync(studentDto);
+            }
+            else if (addedUser.UserRole.RoleName.Equals("Öğretmen"))
+            {
+                TeacherDto teacherDto = new TeacherDto
+                {
+                    UserId = addedUser.Id,
+                    FirstName = firstName,
+                    LastName = lastName,
+                    BirthDate = birthDate
+                };
+
+                await _teacherService.AddTeacherAsync(teacherDto);
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Models.RequestModels;
 using StudentInformationSystem.Application.Models.ResponseModels;
 using StudentInformationSystem.Application.Services.Interfaces;
+using StudentInformationSystem.Core.Enums;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -30,13 +31,13 @@ public class AuthController : ControllerBase
         {
             // TODO : jwt token içeriden devam et. 
             var registerUserResponseDto = await _authService.RegisterUserAsync(model);
-            if (registerUserResponseDto != null)
+            if (registerUserResponseDto.ResultStatus == ResultStatus.Success)
             {
                 var result = await _authService.GenerateJwtTokenAsync(registerUserResponseDto.Data);
                 return Ok(result.Data);
             }
             else
-                return BadRequest(new { Message = "Kullanıcı zaten ekli" });
+                return BadRequest(new { Message = registerUserResponseDto.Message});
         }
         catch (Exception ex)
         {
@@ -47,16 +48,11 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequestModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest("Hatalı model bilgisi.");
-        }
-
         var userValidData = await _authService.ValidateUserAsync(model.Email, model.Password);
 
-        if (userValidData == null)
+        if (userValidData.ResultStatus == ResultStatus.Error)
         {
-            return BadRequest("Email veya Şifre hatalı.");
+            return BadRequest(new { Message = "Kullanıcı adı veya şifre hatalı." });
         }
 
         var result = await _authService.GenerateJwtTokenAsync(userValidData.Data);
