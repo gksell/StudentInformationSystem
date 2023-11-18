@@ -1,17 +1,10 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Services.Interfaces;
-using StudentInformationSystem.Application.ValidationRules;
 using StudentInformationSystem.Core.Enums;
 using StudentInformationSystem.Core.Results;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.TeacherRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentInformationSystem.Application.Services
 {
@@ -22,8 +15,8 @@ namespace StudentInformationSystem.Application.Services
 
         public TeacherService(ITeacherRepository teacherRepository, IMapper mapper)
         {
-            _teacherRepository = teacherRepository;
-            _mapper = mapper;
+            _teacherRepository = teacherRepository ?? throw new ArgumentNullException(nameof(teacherRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task AddTeacherAsync(TeacherDto teacherDto)
@@ -37,9 +30,9 @@ namespace StudentInformationSystem.Application.Services
             var existingTeacherEntity = await _teacherRepository.GetByIdAsync(id);
             if (existingTeacherEntity == null)
             {
-                // TODO : Hata işlemleri.
                 return;
             }
+            // Global alınacak burası. 
             existingTeacherEntity.DeletedDate = DateTime.Now;
             existingTeacherEntity.IsDeleted = true;
             TeacherDto deletedTeacherDto = new TeacherDto();
@@ -51,7 +44,6 @@ namespace StudentInformationSystem.Application.Services
 
         public async Task<IEnumerable<TeacherDto>> GetAllTeacherAsync()
         {
-            // TODO: Mükerrer Kaydı ekleme
             var teacherEntity = await _teacherRepository.GetAllFilterAsync(x => !x.IsDeleted);
             var teacherDto = _mapper.Map<IEnumerable<TeacherDto>>(teacherEntity);
             return teacherDto;
@@ -77,7 +69,6 @@ namespace StudentInformationSystem.Application.Services
 
             if (existingTeacherEntity == null)
             {
-                // TODO : Hata işlemleri.
                 return;
             }
 
@@ -86,12 +77,22 @@ namespace StudentInformationSystem.Application.Services
             await _teacherRepository.UpdateAsync(existingTeacherEntity);
         }
 
+        /// <summary>
+        /// Id ile Teacher var mı kontrolü.
+        /// </summary>
+        /// <param name="teacherId"></param>
+        /// <returns></returns>
         public async Task<bool> TeacherExists(int teacherId)
         {
             var teacherDto = await _teacherRepository.GetByIdAsync(teacherId);
             return teacherDto != null;
         }
 
+        /// <summary>
+        /// TeacherId ile ilgili öğretmenin sınıflarını dönen metod. 
+        /// </summary>
+        /// <param name="teacherId"></param>
+        /// <returns></returns>
         public async Task<IDataResult<List<CourseDto>>> GetClassesByTeacherIdAsync(int teacherId)
         {
             try

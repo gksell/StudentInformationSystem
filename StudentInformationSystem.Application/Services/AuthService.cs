@@ -23,12 +23,12 @@ namespace StudentInformationSystem.Application.Services
         private readonly IMapper _mapper;
         public AuthService(IUserRepository userRepository, IUserRoleService userRoleService, IJwtService jwtService, IStudentService studentService, ITeacherService teacherService, IMapper mapper)
         {
-            _userRepository = userRepository;
-            _userRoleService = userRoleService;
-            _jwtService = jwtService;
-            _studentService = studentService;
-            _teacherService = teacherService;
-            _mapper = mapper;
+            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _userRoleService = userRoleService ?? throw new ArgumentNullException(nameof(userRoleService));
+            _jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
+            _studentService = studentService ?? throw new ArgumentNullException(nameof(studentService));
+            _teacherService = teacherService ?? throw new ArgumentNullException(nameof(teacherService));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<DataResult<UserResponseDto>> RegisterUserAsync(RegisterRequestModel model)
         {

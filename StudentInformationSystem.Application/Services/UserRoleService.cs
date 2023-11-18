@@ -15,7 +15,7 @@ namespace StudentInformationSystem.Application.Services
 
         public UserRoleService(IRoleRepository roleRepository)
         {
-            _roleRepository = roleRepository;
+            _roleRepository = roleRepository ?? throw new ArgumentNullException(nameof(roleRepository));
         }
 
         public async Task<UserRole> GetOrCreateRoleAsync(string roleName)

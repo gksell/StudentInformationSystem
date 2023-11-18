@@ -63,6 +63,11 @@ namespace StudentInformationSystem.API.Controllers
             return Ok(responseModels);
         }
 
+        /// <summary>
+        /// User üzerinden student eklendiği için kullanılmıyor.
+        /// </summary>
+        /// <param name="requestModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddStudent([FromBody] StudentRequestModel requestModel)
         {

@@ -45,14 +45,14 @@ namespace StudentInformationSystem.API.Controllers
             return Ok(teachers.ToList());
         }
 
+        /// <summary>
+        /// User ekleme işlemi sırasında öğretmen kaydı atıldığı için kullanılmayacak. 
+        /// </summary>
+        /// <param name="requestModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddTeacher([FromBody] TeacherRequestModel requestModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var teacher = new TeacherDto
             {
                 FirstName = requestModel.FirstName,
@@ -66,11 +66,6 @@ namespace StudentInformationSystem.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTeacher(int id, [FromBody] TeacherRequestModel requestModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var existingTeacher = await _teacherService.GetTeacherByIdAsync(id);
 
             if (existingTeacher == null)

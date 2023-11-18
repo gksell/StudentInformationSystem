@@ -23,10 +23,10 @@ namespace StudentInformationSystem.Application.Services
 
         public StudentCourseService(IStudentCourseRepository studentCourseRepository, IMapper mapper, ICourseService courseService, IStudentService studentService)
         {
-            _studentCourseRepository = studentCourseRepository;
-            _mapper = mapper;
-            _courseService = courseService;
-            _studentService = studentService;
+            _studentCourseRepository = studentCourseRepository ?? throw new ArgumentNullException(nameof(studentCourseRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _courseService = courseService ?? throw new ArgumentNullException(nameof(courseService));
+            _studentService = studentService ?? throw new ArgumentNullException(nameof(studentService));
         }
 
         public async Task<DataResult<StudentCourseDto>> AddStudentToCourseAsync(StudentCourseRequestModel studentCourseRequestModel)

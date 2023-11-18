@@ -21,8 +21,8 @@ namespace StudentInformationSystem.Application.Services
 
         public StudentService(IStudentRepository studentRepository, IMapper mapper)
         {
-            _studentRepository = studentRepository;
-            _mapper = mapper;
+            _studentRepository = studentRepository ?? throw new ArgumentNullException(nameof(studentRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<StudentDto> GetStudentByIdAsync(int id)
@@ -49,18 +49,13 @@ namespace StudentInformationSystem.Application.Services
         {
             var existingStudentEntity = await _studentRepository.GetByIdAsync(id);
 
-            if (existingStudentEntity == null)
+            if (existingStudentEntity != null)
             {
-                // Hata işlemleri burada
-                return;
+                _mapper.Map(studentDto, existingStudentEntity);
+
+                await _studentRepository.UpdateAsync(existingStudentEntity);
             }
-
-            _mapper.Map(studentDto, existingStudentEntity);
-
-            await _studentRepository.UpdateAsync(existingStudentEntity);
         }
-
-
 
         public async Task DeleteStudentAsync(int id)
         {
