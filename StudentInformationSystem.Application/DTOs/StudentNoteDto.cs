@@ -10,5 +10,7 @@ namespace StudentInformationSystem.Application.DTOs
     {
         public string CourseName { get; set; }
         public double Grade { get; set; }
+
+        public string TeacherName { get; set; }
     }
 }

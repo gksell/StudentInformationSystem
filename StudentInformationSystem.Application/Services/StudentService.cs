@@ -79,5 +79,12 @@ namespace StudentInformationSystem.Application.Services
             var studentDtoList = _mapper.Map<List<StudentDto>>(studentList);
             return studentDtoList;
         }
+
+        public async Task<StudentDto> GetStudentByUserIdAsync(int userId)
+        {
+            var studentEntity = await _studentRepository.GetFilterAsync(x => x.UserId == userId);
+            var studentDto = _mapper.Map<StudentDto>(studentEntity);
+            return studentDto;
+        }
     }
 }

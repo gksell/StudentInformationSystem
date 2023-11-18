@@ -117,5 +117,15 @@ namespace StudentInformationSystem.API.Controllers
             await _studentService.DeleteStudentAsync(id);
             return Ok();
         }
+
+        [HttpGet("by-user-id/{userId}")]
+        public async Task<IActionResult> GetStudentByUserId(int userId)
+        {
+            var student = await _studentService.GetStudentByUserIdAsync(userId);
+
+            return student != null
+                ? Ok(student)
+                : NotFound($"User ID'si {userId} ile ilişkilendirilmiş öğrenci kaydı bulunamadı.");
+        }
     }
 }

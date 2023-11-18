@@ -16,5 +16,6 @@ namespace StudentInformationSystem.Application.Services.Interfaces
         Task DeleteStudentAsync(int id);
         Task<bool> StudentExists(int studentId);
         Task<List<StudentDto>> GetListStudentByCoursesId(List<int> coursesId);
+        Task<StudentDto> GetStudentByUserIdAsync(int userId);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StudentInformationSystem.Application.Constans;
 using StudentInformationSystem.Application.Models.RequestModels;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Core.Enums;
@@ -19,7 +20,7 @@ namespace StudentInformationSystem.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles ="Öğretmen")]
+        [Authorize(Roles = UsersRole.Teacher)]
         public async Task<IActionResult> AddNote([FromBody] NoteRequestModel noteRequestModel)
         {
             try
@@ -44,8 +45,8 @@ namespace StudentInformationSystem.API.Controllers
             }
         }
 
-        [HttpGet("get-notes-by-student")]
-        [Authorize(Roles ="Öğrenci")]
+        [HttpGet("get-notes-by-student/{studentId}")]
+        [Authorize(Roles = UsersRole.Student)]
         public async Task<IActionResult> GetNotesByStudentId(int studentId)
         {
             var result = await _noteService.GetNotesByStudentIdAsync(studentId);

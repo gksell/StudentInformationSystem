@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StudentInformationSystem.Application.DTOs;
+using StudentInformationSystem.Application.Constans;
 using StudentInformationSystem.Application.Models.RequestModels;
-using StudentInformationSystem.Application.Models.ResponseModels;
-using StudentInformationSystem.Application.Services;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Core.Enums;
 
@@ -22,7 +19,7 @@ namespace StudentInformationSystem.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = UsersRole.Admin)]
         public async Task<IActionResult> AddCourse([FromBody] CourseRequestModel courseRequestModel)
         {
             try

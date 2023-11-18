@@ -1,16 +1,11 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using StudentInformationSystem.Application.DTOs;
+using StudentInformationSystem.Application.Constans;
 using StudentInformationSystem.Application.Models.RequestModels;
 using StudentInformationSystem.Application.Models.ResponseModels;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Core.Enums;
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 [ApiController]
 [Route("api/auth")]
@@ -24,7 +19,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles =UsersRole.Admin)]
     public async Task<IActionResult> Register([FromBody] RegisterRequestModel model)
     {
         try

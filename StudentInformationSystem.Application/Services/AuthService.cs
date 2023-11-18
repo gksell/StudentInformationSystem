@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json.Linq;
+using StudentInformationSystem.Application.Constans;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.JWT;
 using StudentInformationSystem.Application.Models.RequestModels;
@@ -8,6 +9,7 @@ using StudentInformationSystem.Core.Enums;
 using StudentInformationSystem.Core.Results;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.UserRepository;
+using System.Data;
 
 namespace StudentInformationSystem.Application.Services
 {
@@ -28,7 +30,6 @@ namespace StudentInformationSystem.Application.Services
             _teacherService = teacherService;
             _mapper = mapper;
         }
-        // TODO : Yapı parçalanabilir. Solide aykırı yaklaşım
         public async Task<DataResult<UserResponseDto>> RegisterUserAsync(RegisterRequestModel model)
         {
             var userRegisterDto = _mapper.Map<RegisterUserDto>(model);
@@ -101,9 +102,9 @@ namespace StudentInformationSystem.Application.Services
             return enteredPassword == storedPassword;
         }
 
-        public async Task AddTeacherOrStudent(User addedUser, string firstName, string lastName, DateTime birthDate)
+        private async Task AddTeacherOrStudent(User addedUser, string firstName, string lastName, DateTime birthDate)
         {
-            if (addedUser.UserRole.RoleName.Equals("Öğrenci"))
+            if (addedUser.UserRole.RoleName.Equals(UsersRole.Student))
             {
                 StudentDto studentDto = new StudentDto
                 {
@@ -115,7 +116,7 @@ namespace StudentInformationSystem.Application.Services
 
                 await _studentService.AddStudentAsync(studentDto);
             }
-            else if (addedUser.UserRole.RoleName.Equals("Öğretmen"))
+            else if (addedUser.UserRole.RoleName.Equals(UsersRole.Teacher))
             {
                 TeacherDto teacherDto = new TeacherDto
                 {
