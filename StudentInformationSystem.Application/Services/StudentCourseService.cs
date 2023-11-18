@@ -6,11 +6,6 @@ using StudentInformationSystem.Core.Enums;
 using StudentInformationSystem.Core.Results;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.StudentCourseRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentInformationSystem.Application.Services
 {

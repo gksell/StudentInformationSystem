@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Newtonsoft.Json.Linq;
 using StudentInformationSystem.Application.Constans;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.JWT;
@@ -9,7 +8,6 @@ using StudentInformationSystem.Core.Enums;
 using StudentInformationSystem.Core.Results;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.UserRepository;
-using System.Data;
 
 namespace StudentInformationSystem.Application.Services
 {

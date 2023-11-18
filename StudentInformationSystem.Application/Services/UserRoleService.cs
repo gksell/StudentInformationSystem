@@ -1,11 +1,6 @@
 ﻿using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.RoleRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentInformationSystem.Application.Services
 {

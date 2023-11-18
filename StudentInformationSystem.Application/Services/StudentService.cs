@@ -1,16 +1,8 @@
 ﻿using AutoMapper;
-using FluentValidation;
-using Microsoft.Identity.Client;
 using StudentInformationSystem.Application.DTOs;
 using StudentInformationSystem.Application.Services.Interfaces;
 using StudentInformationSystem.Domain.Entities;
 using StudentInformationSystem.Persistence.Interfaces.Repository.StudentRepository;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentInformationSystem.Application.Services
 {
