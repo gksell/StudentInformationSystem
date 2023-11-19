@@ -62,14 +62,4 @@ public class AuthController : ControllerBase
         return Ok(responseData);
     }
 
-    // TODO: İşin bitince kapat.
-    public static JwtSecurityToken ParseToken(string token)
-    {
-        var handler = new JwtSecurityTokenHandler();
-
-        var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
-
-        return jsonToken;
-    }
-
 }
