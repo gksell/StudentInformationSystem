@@ -14,5 +14,6 @@ namespace StudentInformationSystem.Application.Services.Interfaces
         Task<IDataResult<NoteDto>> AddNoteAsync(NoteRequestModel noteRequestModel);
         Task<IDataResult<IEnumerable<StudentNoteDto>>> GetNotesByStudentIdAsync(int studentId);
         Task<bool> IsStudentAlreadyGradedAsync(int studentId, int courseId);
+        Task<IDataResult<NoteDto>> UpdateNoteAsync(NoteRequestModel noteRequestModel);
     }
 }

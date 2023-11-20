@@ -97,5 +97,24 @@ namespace StudentInformationSystem.Application.Services
             return existingNote != null;
         }
 
+        public async Task<IDataResult<NoteDto>> UpdateNoteAsync(NoteRequestModel noteRequestModel)
+        {
+            var noteDto = _mapper.Map<NoteDto>(noteRequestModel);
+
+            if (await _studentService.StudentExists(noteDto.StudentId) && await _courseService.CourseExists(noteDto.CourseId))
+            {
+                Note noteEntity = await _noteRepository.GetFilterAsync(x=>x.CourseId == noteDto.CourseId && 
+                                                                x.StudentId ==noteDto.StudentId);
+                noteEntity.Grade = (int)noteDto.Grade;
+                
+                await _noteRepository.UpdateAsync(noteEntity);
+                return new DataResult<NoteDto>(ResultStatus.Success,noteDto);
+            }
+            else
+            {
+                return new DataResult<NoteDto>(ResultStatus.Error, "Öğrenci veya kurs bilgisi hatalı.", null);
+            }
+        }
+
     }
 }
