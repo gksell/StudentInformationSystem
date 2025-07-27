@@ -22,6 +22,7 @@ public class AuthController : ControllerBase
     [Authorize(Roles =UsersRole.Admin)]
     public async Task<IActionResult> Register([FromBody] RegisterRequestModel model)
     {
+        // Test
         try
         {
             // TODO : jwt token içeriden devam et. 
